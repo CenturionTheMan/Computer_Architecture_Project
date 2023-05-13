@@ -1,3 +1,4 @@
+import random
 import numpy as np
 
 
@@ -15,6 +16,11 @@ def bin_to_tens(bits_arr):
     return res
 
 
+def split_bit_array_into_subvectors(bits_array, subvectors_amount):
+    result_array = np.array_split(bits_array, subvectors_amount)
+    return result_array
+
+
 def extend_bin_with_zeros(bits_arr, zeros_amount):
     zeros_to_add = []
     for i in range(zeros_amount):
@@ -25,31 +31,26 @@ def extend_bin_with_zeros(bits_arr, zeros_amount):
 
 def calculate_s(bits_arr, p, r, k):
     s = 0
-    vec_index = 0
     i = 1
-    while i <= k:
-        sub_X = None
-        if i + r >= len(bits_arr):
-            sub_X = bits_arr[0:len(bits_arr) - vec_index]
-        else:
-            sub_X = bits_arr[len(bits_arr) - vec_index - r:len(bits_arr) - vec_index]
+    for i in range(1,k+1):
+        sub_X = bits_arr.pop()
         sub_x = bin_to_tens(sub_X)
         cons = int(np.power(2, r * (i - 1))) % p
         s = s + sub_x * cons
-        i = i + 1
-        vec_index = vec_index + r
     return s
 
 
-def algorithm(x, p):
+def modulo_computation_algorithm(x, p):
     X = tens_to_bin(x)
-    P = tens_to_bin(p)
     r = int(np.ceil(np.log2(p)))
     k = int(np.ceil(len(X) / r))
+
     if len(X) < k * r:
         X = extend_bin_with_zeros(X, k * r - len(X))
-    print('x=', x, '| p=', p, '| r=', r, '| k=', k)
+
+    X = split_bit_array_into_subvectors(X, k)
     s1 = calculate_s(X, p, r, k)
+
     s_temp = s1
     while s_temp >= 2 * p:
         S_temp = tens_to_bin(s_temp)
@@ -57,18 +58,18 @@ def algorithm(x, p):
         k_temp = int(np.ceil(n_temp/r))
         if len(S_temp) < k_temp * r:
             S_temp = extend_bin_with_zeros(S_temp, k_temp * r - len(S_temp))
+        S_temp = split_bit_array_into_subvectors(S_temp, k_temp)
         s_temp = calculate_s(bits_arr=S_temp, p=p, r=r, k=k_temp)
-    result = 0
+
     if p <= s_temp:
-        result = s_temp - p
+        return s_temp - p
     else:
-        result = s_temp
-    return result
+        return s_temp
 
 
 if __name__ == '__main__':
-    x = 262143
-    p = 47
-    x_mod_p = algorithm(x, p)
+    x = random.randint(0, 10000)
+    p = random.randint(0, 500)
+    x_mod_p = modulo_computation_algorithm(x, p)
     print(f'{x}(mod{p}) = {x % p}')
     print('algorithm result =', x_mod_p)
