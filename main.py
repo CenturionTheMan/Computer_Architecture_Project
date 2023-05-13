@@ -36,7 +36,7 @@ def calculate_s(bits_arr, p, r, k):
 def algorithm(x, p):
     X = tens_to_bin(x)
     P = tens_to_bin(p)
-    r = int(np.ceil(np.log2(p)))
+    r = int(np.ceil(np.log2(p) - 1))
     k = int(np.ceil(len(X) / r))
     print('x=', x, '| p=', p, '| r=', r, '| k=', k)
     s1 = calculate_s(X, p, r, k)
