@@ -11,7 +11,7 @@ def bin_to_tens(bits_arr):
     res = 0
     base = 0
     for bit in reversed(bits_arr):
-        res = res + bit * np.power(2, base)
+        res = res + bit * pow(2, base)
         base = base + 1
     return res
 
@@ -68,8 +68,10 @@ def modulo_computation_algorithm(x, p):
 
 
 if __name__ == '__main__':
-    x = random.randint(0, 10000)
-    p = random.randint(0, 500)
+    maxX = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    maxP = [1,1,1,1,1,1,1,1]
+    x = bin_to_tens(maxX)
+    p = bin_to_tens(maxP)
     x_mod_p = modulo_computation_algorithm(x, p)
     print(f'{x}(mod{p}) = {x % p}')
     print('algorithm result =', x_mod_p)
