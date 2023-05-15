@@ -2,6 +2,7 @@ import math
 import random
 import numpy as np
 import os
+import time
 
 def tens_to_bin(num):
     bits_arr = [int(i) for i in list('{0:0b}'.format(num))]
@@ -95,6 +96,7 @@ def perform_calculations(x_max, x_min, x_step, p_max, p_min, p_step):
     for p in range(p_min, p_max, p_step):
         if os.path.exists(f'mod_{p}.csv'):
             os.remove(f'mod_{p}.csv')
+        start = time.time()
         for x in range(x_min, x_max, x_step):
             if x % (x_step * 1000) == 0:
                 print(f'p = {p} | x = {x} | perc = {(x*100/X):0.2f}%')
@@ -103,14 +105,22 @@ def perform_calculations(x_max, x_min, x_step, p_max, p_min, p_step):
             if counter > max_iterations:
                 max_iterations = counter
                 save_in_file_with_name(x,p,counter,"current_max.csv")
+            if x_mod_p != x % p:
+                print("ERROR!")
+        end = time.time()
+        minutes = int(math.floor((end-start)/60))
+        seconds = int(end - start - minutes*60)
+        print(f'Done for mod{p} in {minutes} min {seconds} sec')
 
+2
 if __name__ == '__main__':
     maxX = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
     maxP = [1,1,1,1,1,1,1,1]
     X = bin_to_tens(maxX)
     P = bin_to_tens(maxP)
-    x_step = 1_000_000_000_000_000
+    #prime_nums = [2,3,5,7,11,13,17,19,23,27,29,37,41,43,47,53,59,61,67,71, 73,79,83,89,97,101,103,107,109,113,127,131,137,139,149, 151,157,163,167,173,179,181,191,193,197,199,211,223,227, 229,233,239,241,251]
+    x_step = 1_300_000_500_000_005
     print("BEGINS...")
-    perform_calculations(X, 0, x_step, P, 3, 1)
+    perform_calculations(X, 0, x_step, P, 2, 1)
     print('END')
 
