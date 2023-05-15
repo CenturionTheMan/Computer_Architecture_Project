@@ -1,7 +1,7 @@
 import math
 import random
 import numpy as np
-
+import os
 
 def tens_to_bin(num):
     bits_arr = [int(i) for i in list('{0:0b}'.format(num))]
@@ -82,22 +82,35 @@ def save_in_file_with_name(x, p, counter, file_name):
     f.close()
 
 
-if __name__ == '__main__':
-    maxX = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-    maxP = [1,1,1,1,1,1,1,1]
-    X = bin_to_tens(maxX)
-    P = bin_to_tens(maxP)
-    print("BEGINS...")
+def perform_calculations(x_max, x_min, x_step, p_max, p_min, p_step):
     max_iterations = -1
-    for p in range(3, P, 1):
-        print(f'p = {p}')
-        for x in range(1000000, X, 100000000):
+    if os.path.exists("current_max.csv"):
+        f = open("current_max.csv", "r")
+        content = f.read()
+        lines = content.split("\n")
+        lines.pop()
+        val_str = lines.pop().split(";")[2]
+        max_iterations = int(val_str)
+
+    for p in range(p_min, p_max, p_step):
+        if os.path.exists(f'mod_{p}.csv'):
+            os.remove(f'mod_{p}.csv')
+        for x in range(x_min, x_max, x_step):
+            if x % (x_step * 1000) == 0:
+                print(f'p = {p} | x = {x} | perc = {(x*100/X):0.2f}%')
             x_mod_p, counter = modulo_computation_algorithm(x, p)
             save_in_file(x, p, counter)
             if counter > max_iterations:
                 max_iterations = counter
                 save_in_file_with_name(x,p,counter,"current_max.csv")
 
+if __name__ == '__main__':
+    maxX = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    maxP = [1,1,1,1,1,1,1,1]
+    X = bin_to_tens(maxX)
+    P = bin_to_tens(maxP)
+    x_step = 1_000_000_000_000_000
+    print("BEGINS...")
+    perform_calculations(X, 0, x_step, P, 3, 1)
+    print('END')
 
-    #print(f'{x}(mod{p}) = {x % p}')
-    #print('algorithm result =', x_mod_p)
