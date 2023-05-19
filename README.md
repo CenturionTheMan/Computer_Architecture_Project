@@ -1,2 +1,2 @@
 # OiAK_Projekt
-Obliczanie X mod P
+X mod P calculations
