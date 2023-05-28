@@ -1,80 +1,8 @@
 import math
-import numpy as np
 import os
 import time
-
-
-# Function to convert a decimal number to a binary array
-def tens_to_bin(num):
-    bits_arr = [int(i) for i in list('{0:0b}'.format(num))]
-    return bits_arr
-
-
-# Function to convert a binary array to a decimal number
-def bin_to_tens(bits_arr):
-    res = 0
-    base = 0
-    for bit in reversed(bits_arr):
-        res = res + bit * pow(2, base)
-        base = base + 1
-    return int(res)
-
-
-# Function to split a bit array into subvectors
-def split_bit_array_into_subvectors(bits_array, subvectors_amount):
-    result_array = np.array_split(bits_array, subvectors_amount)
-    return result_array
-
-
-# Function to extend a binary array with zeros (zeros are added to beginning)
-def extend_bin_with_zeros(bits_arr, zeros_amount):
-    zeros_to_add = []
-    for i in range(zeros_amount):
-        zeros_to_add.append(0)
-    zeros_to_add.extend(bits_arr)
-    return zeros_to_add
-
-
-# Function to calculate 's' value
-def calculate_s(bits_arr, p, r, k):
-    s = 0
-    i = 1
-    for i in range(1,k+1):
-        sub_X = bits_arr.pop()
-        sub_x = int(bin_to_tens(sub_X))
-        cons = int(pow(2, r * (i - 1))) % p
-        s = s + sub_x * cons
-    return int(s)
-
-
-# Function to perform fast modulo computation on big numbers
-def modulo_computation_algorithm(x, p):
-    X = tens_to_bin(x)
-    r = int(math.ceil(math.log2(p)))
-    k = int(math.ceil(len(X) / r))
-
-    if len(X) < k * r:
-        X = extend_bin_with_zeros(X, k * r - len(X))
-
-    X = split_bit_array_into_subvectors(X, k)
-    s1 = calculate_s(X, p, r, k)
-
-    s_temp = s1
-    loop_counter = 1
-    while s_temp >= 2 * p:
-        loop_counter = loop_counter + 1
-        S_temp = tens_to_bin(s_temp)
-        n_temp = len(S_temp)
-        k_temp = int(math.ceil(n_temp/r))
-        if len(S_temp) < k_temp * r:
-            S_temp = extend_bin_with_zeros(S_temp, k_temp * r - len(S_temp))
-        S_temp = split_bit_array_into_subvectors(S_temp, k_temp)
-        s_temp = calculate_s(bits_arr=S_temp, p=p, r=r, k=k_temp)
-
-    if p <= s_temp:
-        return s_temp - p, loop_counter
-    else:
-        return s_temp, loop_counter
+from ModuloAlgorithm import modulo_computation_algorithm
+from ModularProductAlgorithm import calculate_modular_product
 
 
 # Function to save results in a file
@@ -127,13 +55,20 @@ def perform_calculations(x_max, x_min, x_step, p_max, p_min, p_step):
 
 # Entry point of the program
 if __name__ == '__main__':
-    x = 2^32-1
-    p = 255
-    res, iterations = modulo_computation_algorithm(x, p)
+    a = 45
+    b = 15
+    p = 47
+    res = calculate_modular_product(a, b, p)
+    print(f"{a}*{b}(mod{p}) = {a * b % p}")
+    print(f"algh res = {res}")
 
-    print("\nRESULT:")
-    print(f"{x}(mod{p}) = {x%p}")
-    print(f"Algorithm result = {res} | iterations amount = {iterations}")
+    #x = 2721979
+    #p = 129
+    #res, iterations = modulo_computation_algorithm(x, p)
+
+    #print("\nRESULT:")
+    #print(f"{x}(mod{p}) = {x%p}")
+    #print(f"Algorithm result = {res} | iterations amount = {iterations}")
 
     #print("BEGINS...")
     #p_min = 2
