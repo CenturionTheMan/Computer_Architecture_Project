@@ -159,6 +159,7 @@ if __name__ == '__main__':
                                           f"p=29 długość binarna: {len(tens_to_bin(29))}")
 
 
+
     #
     # with open("data.csv","a") as file:
     #     for i in range(0, 2**16):

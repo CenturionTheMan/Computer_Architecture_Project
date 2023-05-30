@@ -20,6 +20,7 @@ def modulo_computation_algorithm(x, p):
     k = int(math.ceil(len(X) / r))
     s_temps = []
 
+
     if len(X) < k * r:
         X = extend_bin_with_zeros(X, k * r - len(X))
 
