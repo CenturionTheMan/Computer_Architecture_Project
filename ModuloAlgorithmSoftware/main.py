@@ -77,7 +77,7 @@ def print_function(s_temps, name):
         s_temps_p.append(p_length)
 
     plt.scatter(s_temps_numbers, s_temps)
-    plt.plot(s_temps_numbers, s_temps_p, color='red', label="Threshold (P binary length * 2 + 1)")
+    plt.plot(s_temps_numbers, s_temps_p, color='red', label="Threshold (P_binary_length * 2 + 1)")
     plt.legend();
     plt.xlabel('Iteracja petli')
     plt.ylabel('s_temp(długość binarna)')
