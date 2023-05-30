@@ -77,7 +77,8 @@ def print_function(s_temps, name):
         s_temps_p.append(p_length)
 
     plt.scatter(s_temps_numbers, s_temps)
-    plt.plot(s_temps_numbers, s_temps_p, color='red')
+    plt.plot(s_temps_numbers, s_temps_p, color='red', label="Threshold (P binary length * 2 + 1)")
+    plt.legend();
     plt.xlabel('Iteracja petli')
     plt.ylabel('s_temp(długość binarna)')
     plt.xticks(rotation = 30, ha='right')
@@ -110,8 +111,8 @@ if __name__ == '__main__':
 
     s_temp, loop_counter, s_temps = modulo_computation_algorithm(549_824_036_864, 129)
     print_function(find_lengths(s_temps), f"Wykres dla \n"
-                                          f"x=549 824 036 864 długość binarna: {len(tens_to_bin(549_824_036_864))}\n"
-                                          f"p=129 długość binarna: {len(tens_to_bin(129))}")
+                                          f"x=549 824 036 864, długość binarna: {len(tens_to_bin(549_824_036_864))}\n"
+                                          f"p=129, długość binarna: {len(tens_to_bin(129))}")
 
     #1_152_921_504_606_846_976 - 60 bitów
     #1_083_245_568 - 30 bitów
