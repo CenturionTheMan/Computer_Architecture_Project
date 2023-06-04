@@ -13,7 +13,7 @@ def bin_to_tens(bits_arr):
     res = 0
     base = 0
     for bit in reversed(bits_arr):
-        res = res + bit * pow(2, base)
+        res = res + int(bit) * pow(2, base)
         base = base + 1
     return int(res)
 
