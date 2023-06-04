@@ -87,7 +87,7 @@ def print_function(s_temps, p, name):
     plt.xlabel('Iteracja petli')
     plt.ylabel('s_temp(długość binarna)')
     plt.xticks(rotation=30, ha='right')
-    plt.title(name)
+    plt.title(name, fontsize = 10)
     plt.grid(True)
     plt.show()
 
